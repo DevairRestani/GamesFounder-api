@@ -6,7 +6,9 @@
   "password": "102155545Ab.",
   "database": "GamesFounderDB",
   "migrations": ["./src/database/migrations/*.ts"],
+  "entities": ["./src/database/models/*.ts"],
   "cli": {
-    "migrationsDir": "./src/database/migrations"
+    "migrationsDir": "./src/database/migrations",
+    "entitiesDir": "./src/database/models"
   }
 }
