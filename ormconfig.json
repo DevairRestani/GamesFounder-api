@@ -5,10 +5,17 @@
   "username": "postgres",
   "password": "102155545Ab.",
   "database": "GamesFounderDB",
-  "migrations": ["./src/database/migrations/*.ts"],
-  "entities": ["./src/database/models/*.ts"],
-  "cli": {
+  "migrations": 
+  [
+    "./src/database/migrations/*.ts"
+  ],
+  "entities": 
+  [
+    "./src/models/entities/*.ts"
+  ],
+  "cli": 
+  {
     "migrationsDir": "./src/database/migrations",
-    "entitiesDir": "./src/database/models"
+    "entitiesDir": "./src/models/entities"
   }
 }

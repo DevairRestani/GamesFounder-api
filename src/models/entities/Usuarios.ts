@@ -33,15 +33,15 @@ export class Usuarios {
   @Column("character varying", { name: "link", nullable: true })
   link: string | null;
 
-  @Column("timestamp without time zone", {
+  @Column("timestamp with time zone", {
     name: "criado_em",
-    default: () => "now()",
+    default: () => new Date(),
   })
   criadoEm: Date;
 
   @Column("timestamp without time zone", {
     name: "atualizado_em",
-    default: () => "now()",
+    default: () => new Date(),
   })
   atualizadoEm: Date;
 
@@ -66,3 +66,5 @@ export class Usuarios {
   @OneToMany(() => UsuariosContas, (usuariosContas) => usuariosContas.usuario)
   usuariosContas: UsuariosContas[];
 }
+
+export default Usuarios;

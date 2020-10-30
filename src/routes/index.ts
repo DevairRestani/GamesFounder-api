@@ -1,9 +1,9 @@
 import { Router } from "express";
 
+import usuariosRouter from "./Usuarios.rotas";
+
 const routes = Router();
 
-routes.get("/", (req, res) => {
-  return res.json({ message: "Hello Word" });
-});
+routes.use('/usuarios', usuariosRouter);
 
 export default routes;
