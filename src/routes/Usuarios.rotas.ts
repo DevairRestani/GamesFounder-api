@@ -1,25 +1,32 @@
 import { Router } from "express";
+import multer from "multer";
 
 import CreateUsuariosService from "../services/createUsuariosServices";
 
 const usuariosRouter = Router();
+const upload = multer();
 
-usuariosRouter.post("/", async (req, res) => {
+const imagemLoad = upload.single("imagem");
+
+usuariosRouter.post("/", imagemLoad, async (req, res) => {
   try {
     const {
       email,
       senha,
-      imagem,
       exibirDataNascimento,
       dataNascimento,
       genero,
       streamer,
       link,
+      nome,
+      nick,
     } = req.body;
+
+    const imagem = req.file;
 
     const CreateUser = new CreateUsuariosService();
 
-    const User = CreateUser.execute({
+    const User = await CreateUser.execute({
       email,
       senha,
       imagem,
@@ -28,6 +35,8 @@ usuariosRouter.post("/", async (req, res) => {
       genero,
       streamer,
       link,
+      nome,
+      nick,
     });
 
     return res.json(User);

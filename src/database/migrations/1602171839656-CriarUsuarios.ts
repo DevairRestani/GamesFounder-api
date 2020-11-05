@@ -16,8 +16,18 @@ export class CriarUsuarios1602171839656 implements MigrationInterface {
             default: "uuid_generate_v4()",
           },
           {
-            name: "imagem",
+            name: "nick",
             type: "varchar",
+            isNullable: true,
+          },
+          {
+            name: "nome",
+            type: "varchar",
+            isNullable: false,
+          },
+          {
+            name: "imagem",
+            type: "bytea",
             isNullable: true,
           },
           {

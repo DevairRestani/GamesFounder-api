@@ -12,7 +12,9 @@ interface Request {
   genero: string | null;
   streamer: boolean;
   link: string | null;
-  imagem: string | null;
+  imagem: object | null;
+  nome: string;
+  nick: string | null;
 }
 
 class CreateUsuariosServices {
@@ -25,16 +27,22 @@ class CreateUsuariosServices {
     streamer,
     link,
     imagem,
+    nome,
+    nick,
   }: Request): Promise<UsuariosContas> {
     const UsuariosContasRepository = getRepository(UsuariosContas);
     const UsuarioRepository = getRepository(Usuarios);
+
+    if (!streamer && link) {
+      throw new Error("Não foi possivel cadastrar o usuario");
+    }
 
     const UsuarioExiste = await UsuariosContasRepository.findOne({
       where: { email },
     });
 
     if (UsuarioExiste) {
-      throw new Error("Usuario already exists");
+      throw new Error("O usuário já existe");
     }
 
     const Usuario = UsuarioRepository.create({
@@ -44,6 +52,8 @@ class CreateUsuariosServices {
       exibirDataNascimento,
       streamer,
       link,
+      nome,
+      nick,
     });
 
     let usuarioSalvo = await UsuarioRepository.save(Usuario);
@@ -60,9 +70,7 @@ class CreateUsuariosServices {
       usuario: usuarioSalvo,
     });
 
-    UsuariosContasRepository.save(ContaUsuario);
-
-    return ContaUsuario;
+    return await UsuariosContasRepository.save(ContaUsuario);
   }
 }
 
