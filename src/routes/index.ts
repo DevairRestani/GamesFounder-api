@@ -2,11 +2,11 @@ import { Router } from 'express';
 
 import loginRouter from './login.routes';
 
+import usuariosRouter from "./Usuarios.rotas";
+
 const routes = Router();
 
-routes.get("/", (req, res) => {
-  return res.json({ message: "Hello Word" });
-});
+routes.use('/usuarios', usuariosRouter);
 
 routes.use('/login', loginRouter);
 
