@@ -33,6 +33,11 @@ export class CriarUsuarioConta1602177827573 implements MigrationInterface {
             type: "varchar",
             isNullable: false,
           },
+          {
+            name: "token",
+            type: "varchar",
+            isNullable: true,
+          },
         ],
       })
     );

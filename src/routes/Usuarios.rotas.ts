@@ -8,7 +8,7 @@ const upload = multer();
 
 const imagemLoad = upload.single("imagem");
 
-usuariosRouter.post("/", imagemLoad, async (req, res) => {
+usuariosRouter.post("/cadastrar", imagemLoad, async (req, res) => {
   try {
     const {
       email,

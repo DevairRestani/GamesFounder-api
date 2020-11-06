@@ -106,6 +106,13 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-8.10.65.tgz#d2b5d0eb97e28cc1e28008d2872e4da8638a8ea3"
   integrity sha512-xdcqtQl1g3p/49kmcj7ZixPWOcNHA1tYNz+uN0PJEcgtN6zywK74aacTnd3eFGPuBpD7kK8vowmMRkUt6jHU/Q==
 
+"@types/nodemailer@^6.4.0":
+  version "6.4.0"
+  resolved "https://registry.yarnpkg.com/@types/nodemailer/-/nodemailer-6.4.0.tgz#d8c039be3ed685c4719a026455555be82c124b74"
+  integrity sha512-KY7bFWB0MahRZvVW4CuW83qcCDny59pJJ0MQ5ifvfcjNwPlIT0vW4uARO4u1gtkYnWdhSvURegecY/tzcukJcA==
+  dependencies:
+    "@types/node" "*"
+
 "@types/qs@*":
   version "6.9.5"
   resolved "https://registry.yarnpkg.com/@types/qs/-/qs-6.9.5.tgz#434711bdd49eb5ee69d90c1d67c354a9a8ecb18b"
@@ -816,6 +823,11 @@ ee-first@1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/ee-first/-/ee-first-1.1.1.tgz#590c61156b0ae2f4f0255732a158b266bc56b21d"
   integrity sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0=
+
+email-validator@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/email-validator/-/email-validator-2.0.4.tgz#b8dfaa5d0dae28f1b03c95881d904d4e40bfe7ed"
+  integrity sha512-gYCwo7kh5S3IDyZPLZf6hSS0MnZT8QmJFqYvbqlDZSbwdZlY6QZWxJ4i/6UhITOJ4XzyI647Bm2MXKCLqnJ4nQ==
 
 emoji-regex@^8.0.0:
   version "8.0.0"
@@ -1702,6 +1714,11 @@ node-pre-gyp@^0.11.0:
     rimraf "^2.6.1"
     semver "^5.3.0"
     tar "^4"
+
+nodemailer@^6.4.14:
+  version "6.4.14"
+  resolved "https://registry.yarnpkg.com/nodemailer/-/nodemailer-6.4.14.tgz#2ffb160b63ff0c15a979da75e1f82af85433d2a3"
+  integrity sha512-0AQHOOT+nRAOK6QnksNaK7+5vjviVvEBzmZytKU7XSA+Vze2NLykTx/05ti1uJgXFTWrMq08u3j3x4r4OE6PAA==
 
 "nopt@2 || 3":
   version "3.0.6"

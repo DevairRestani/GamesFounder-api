@@ -16,6 +16,9 @@ export class UsuariosContas {
   @Column("character varying", { name: "senha" })
   senha: string;
 
+  @Column("character varying", { name: "token" })
+  token: string | null;
+
   @ManyToOne(() => Usuarios, (usuarios) => usuarios.usuariosContas, {
     onDelete: "SET NULL",
     onUpdate: "CASCADE",
