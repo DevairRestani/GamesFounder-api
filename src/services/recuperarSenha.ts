@@ -1,75 +1,61 @@
 import { getRepository, ObjectID } from "typeorm";
-import emailValidator from "email-validator";
+import randToken from "rand-token";
 import { hash } from "bcryptjs";
 
 import { UsuariosContas } from "../models/entities/UsuariosContas";
-import { Email } from "./Email";
-
-interface Params {
-  email: string;
-}
+import { Email } from "./Email.service";
 
 class recuperarSenha {
-  private UsuarioRepository = getRepository(UsuariosContas);
+    public async execute(email: string): Promise<UsuariosContas> {
+        const UsuarioRepository = getRepository(UsuariosContas);
 
-  private async verifyEmail(email: string): Promise<UsuariosContas | null> {
-    if (!emailValidator.validate(email)) {
-      throw new Error("Email inválido");
+        let usuario = await UsuarioRepository.findOne({ email: email });
+
+        if (!usuario) {
+            throw new Error("Email inválido");
+        }
+
+        const token = randToken.generate(50);
+
+        usuario.token = token;
+
+        await UsuarioRepository.save(usuario);
+
+        const emailSender = new Email();
+
+        await emailSender.send({
+            assunto: "recuperarSenha",
+            conteudo: `<h1>Token</h1>
+                        <a href='http://localhost:3333/recuperarSenha/Atualizar'></a>`,
+            destinatario: email,
+            html: true,
+        });
+
+        return usuario;
     }
 
-    const User = await this.UsuarioRepository.findOne({ email: email });
+    public async updateSenha(
+        email: string,
+        token: string,
+        senha: string
+    ): Promise<UsuariosContas> {
+        const UsuarioRepository = getRepository(UsuariosContas);
 
-    if (!User) {
-      return null;
+        let usuario = await UsuarioRepository.findOne({
+            email: email,
+            token: token,
+        });
+
+        if (!usuario) {
+            throw new Error("Não foi possivel atualizar a senha");
+        }
+        usuario.senha = await hash(senha, 8);
+        usuario.token = null;
+
+        await UsuarioRepository.save(usuario);
+
+        return usuario;
     }
-
-    return User;
-  }
-
-  public async execute({ email }: Params): Promise<UsuariosContas> {
-    let usuario = await this.verifyEmail(email);
-
-    if (!usuario) {
-      throw new Error("Email inválido");
-    }
-
-    const token = Math.random().toString(50);
-
-    usuario.token = token;
-
-    await this.UsuarioRepository.save(usuario);
-
-    const emailSender = new Email();
-
-    await emailSender.send({
-      assunto: "recuperarSenha",
-      conteudo: "token: " + usuario.token,
-      destinatario: email,
-    });
-
-    return usuario;
-  }
-
-  public async updateSenha(
-    email: string,
-    token: string,
-    senha: string
-  ): Promise<UsuariosContas> {
-    let usuario = await this.UsuarioRepository.findOne({
-      email: email,
-      token: token,
-    });
-
-    if (!usuario) {
-      throw new Error("Não foi possivel atualizar a senha");
-    }
-    usuario.senha = await hash(senha, 8);
-    usuario.token = null;
-
-    await this.UsuarioRepository.save(usuario);
-
-    return usuario;
-  }
 }
 
 export default recuperarSenha;

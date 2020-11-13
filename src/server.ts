@@ -1,5 +1,5 @@
-import express from 'express';
-import routes from './routes';
+import express from "express";
+import routes from "./routes/index.routes";
 
 import "./database";
 
@@ -9,5 +9,5 @@ app.use(express.json());
 app.use(routes);
 
 app.listen(3333, () => {
-  console.log("(☞ﾟヮﾟ)☞ Server Iniciado ☜(ﾟヮﾟ☜)");
+    console.log("(☞ﾟヮﾟ)☞ Server Iniciado ☜(ﾟヮﾟ☜)");
 });

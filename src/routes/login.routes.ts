@@ -1,10 +1,10 @@
-import { Router } from 'express';
+import { Router } from "express";
 
-import AutenticacaoUserService from '../services/AutenticacaoUserService';
+import AutenticacaoUserService from "../services/AutenticacaoUser.service";
 
 const loginRouter = Router();
 
-loginRouter.post('/', async (request, response) => {
+loginRouter.post("/", async (request, response) => {
     try {
         const { email, password } = request.body;
 
@@ -13,12 +13,12 @@ loginRouter.post('/', async (request, response) => {
         const usuario = await autenticacaoUser.execute({
             email,
             password,
-        })
+        });
 
         return response.json({ usuario });
-} catch (err) {
-    return response.status(400).json({ error: err.message});
-}
+    } catch (err) {
+        return response.status(400).json({ error: err.message });
+    }
 });
 
 export default loginRouter;
