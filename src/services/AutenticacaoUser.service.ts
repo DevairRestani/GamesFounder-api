@@ -1,35 +1,41 @@
-import { getRepository } from 'typeorm';
-import { compare } from 'bcryptjs';
+import { getRepository } from "typeorm";
+import { compare } from "bcryptjs";
+import { sign } from "jsonwebtoken";
+import authConfig from "../config/auth";
 
-import Usuario from '../models/Usuario';
+import { UsuariosContas } from "../models/entities/UsuariosContas";
 
 interface Request {
     email: string;
-    passord: string;
+    senha: string;
 }
 
 interface Response {
-    usuarios: Usuario;
+    usuario: UsuariosContas;
+    token: string;
 }
 
 class AutenticacaoUserService {
-    public async execute({ email, passord}: Request): Promise<Response> {
-        const UsuarioRepository = getRepository(Usuario);
+    public async execute({ email, senha }: Request): Promise<Response> {
+        const UsuarioRepository = getRepository(UsuariosContas);
 
-        const Usuario = await UsuarioRepository.findOne({ where: { email } });
+        const usuario = await UsuarioRepository.findOne({ email });
 
-        if (!Usuario){
-            throw new Error('Email ou senha incorretos!');
+        if (!usuario) {
+            throw new Error("Email ou senha incorretos!");
         }
-        const passordMatched = await compare(passord, Usuario.passord);
+        const passordMatched = await compare(senha, usuario.senha);
 
-        if (!passordMatched){
-            throw new Error('Email ou senha incorretos!');
+        if (!passordMatched) {
+            throw new Error("Email ou senha incorretos!");
         }
 
-        return{
-            Usuario,
-        }
+        const token = sign({}, authConfig.jwt.secret, {
+            subject: usuario.id,
+            expiresIn: authConfig.jwt.expiresIn,
+        });
+
+        return { usuario, token };
     }
 }
 

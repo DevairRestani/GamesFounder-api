@@ -1,6 +1,7 @@
 import { Router } from "express";
 import multer from "multer";
 
+import verificarAutenticado from "../middleware/verificarAutenticado";
 import CreateUsuariosService from "../services/createUsuario.service";
 
 const usuariosRouter = Router();
@@ -44,5 +45,10 @@ usuariosRouter.post("/cadastrar", imagemLoad, async (req, res) => {
         return res.status(400).json({ message: err.message });
     }
 });
+// .get("/Amigos", verificarAutenticado ,async (req, res) => {
+//     try{
+//         const id = req.usuario.id;
+//     }
+// });
 
 export default usuariosRouter;

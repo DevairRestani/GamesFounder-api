@@ -6,16 +6,16 @@ const loginRouter = Router();
 
 loginRouter.post("/", async (request, response) => {
     try {
-        const { email, password } = request.body;
+        const { email, senha } = request.body;
 
         const autenticacaoUser = new AutenticacaoUserService();
 
-        const usuario = await autenticacaoUser.execute({
+        const { usuario, token } = await autenticacaoUser.execute({
             email,
-            password,
+            senha,
         });
 
-        return response.json({ usuario });
+        return response.json({ usuario, token });
     } catch (err) {
         return response.status(400).json({ error: err.message });
     }

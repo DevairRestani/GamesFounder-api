@@ -1,5 +1,5 @@
 import { Router } from "express";
-import recuperarSenha from "../services/recuperarSenha";
+import recuperarSenha from "../services/recuperarSenha.service";
 
 const recSenha = Router();
 

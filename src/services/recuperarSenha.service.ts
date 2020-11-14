@@ -25,10 +25,12 @@ class recuperarSenha {
 
         await emailSender.send({
             assunto: "recuperarSenha",
-            conteudo: `<h1>Token</h1>
-                        <a href='http://localhost:3333/recuperarSenha/Atualizar'></a>`,
+            conteudo:
+                `<h1>Token</h1>
+                        <p>` +
+                usuario.token +
+                `</p>`,
             destinatario: email,
-            html: true,
         });
 
         return usuario;

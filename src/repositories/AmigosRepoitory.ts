@@ -3,11 +3,17 @@ import { EntityRepository, Repository } from "typeorm";
 
 @EntityRepository(Usuarios)
 class UsuarioRepository extends Repository<Usuarios> {
-  public async ListAll(): Promise<Usuarios[] | null> {
-    return (await this.ListAll()) || null;
-  }
+    public async ListAll(): Promise<Usuarios[] | null> {
+        return (await this.ListAll()) || null;
+    }
 
-  public async ListAmigos(usuario_id: string): Promise<Usuarios[] | null> {
-    return (await this.ListAmigos(usuario_id)) || null;
-  }
+    public async ListAmigos(usuario_id: string): Promise<Usuarios[] | null> {
+        const usuario = await await this.findOne(usuario_id);
+
+        if (!usuario) {
+            throw new Error("Usuario não encontrado");
+        }
+
+        return usuario.amigos || null;
+    }
 }
