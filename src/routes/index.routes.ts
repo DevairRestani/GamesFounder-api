@@ -8,5 +8,8 @@ const routes = Router();
 routes.use("/usuarios", usuariosRouter);
 routes.use("/recuperarSenha", recSenha);
 routes.use("/login", loginRouter);
+routes.get("/", (req, res) => {
+  res.send("success");
+});
 
 export default routes;
