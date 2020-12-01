@@ -1,40 +1,39 @@
 import { getRepository } from "typeorm";
-import { hash } from "bcryptjs";
 
-import { Jogos } from "../models/entities/Jogos";
+import { Jogo } from "../models/entities/Jogo";
 
 interface Request {
-    nome: string;
-    genero: string;
-    ano: string | null;
+  nome: string;
+  genero: string;
+  ano: string | null;
 }
 
 class CreateJogosService {
-    public async execute({ nome, genero, ano }: Request): Promise<Jogos> {
-        const JogosRepository = getRepository(Jogos);
+  public async execute({ nome, genero, ano }: Request): Promise<Jogo> {
+    const JogosRepository = getRepository(Jogo);
 
-        const JogoExiste = await JogosRepository.findOne({
-            where: { nome },
-        });
+    const JogoExiste = await JogosRepository.findOne({
+      where: { nome },
+    });
 
-        if (JogoExiste) {
-            throw new Error("Jogo já cadastrado!");
-        }
-
-        const Jogo = JogosRepository.create({
-            nome,
-            genero,
-            ano,
-        });
-
-        let jogoSalvo = await JogosRepository.save(Jogo);
-
-        if (!jogoSalvo) {
-            throw new Error("Não foi possivel salvar o jogo!");
-        }
-
-        return await JogosRepository.save(Jogo);
+    if (JogoExiste) {
+      throw new Error("Jogo já cadastrado!");
     }
+
+    const Jogos = JogosRepository.create({
+      nome,
+      genero,
+      ano,
+    });
+
+    let jogoSalvo = await JogosRepository.save(Jogos);
+
+    if (!jogoSalvo) {
+      throw new Error("Não foi possivel salvar o jogo!");
+    }
+
+    return await JogosRepository.save(Jogos);
+  }
 }
 
 export default CreateJogosService;

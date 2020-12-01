@@ -5,20 +5,20 @@ import AutenticacaoUserService from "../services/AutenticacaoUser.service";
 const loginRouter = Router();
 
 loginRouter.post("/", async (request, response) => {
-    try {
-        const { email, senha } = request.body;
+  try {
+    const { email, senha } = request.body;
 
-        const autenticacaoUser = new AutenticacaoUserService();
+    const autenticacaoUser = new AutenticacaoUserService();
 
-        const { usuario, token } = await autenticacaoUser.execute({
-            email,
-            senha,
-        });
+    const { token } = await autenticacaoUser.execute({
+      email,
+      senha,
+    });
 
-        return response.json({ usuario, token });
-    } catch (err) {
-        return response.status(400).json({ error: err.message });
-    }
+    return response.json({ token });
+  } catch (err) {
+    return response.status(400).json({ error: err.message });
+  }
 });
 
 export default loginRouter;

@@ -1,6 +1,6 @@
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
-import { Grupos } from "./Grupos";
-import { Jogos } from "./Jogos";
+import { Grupo } from "./Grupo";
+import { Jogo } from "./Jogo";
 import { SalasUsuarios } from "./SalasUsuarios";
 
 @Entity("salas", { schema: "public" })
@@ -12,19 +12,19 @@ export class Salas {
   })
   id: string;
 
-  @ManyToOne(() => Grupos, (grupos) => grupos.salas, {
+  @ManyToOne(() => Grupo, (grupo) => grupo.salas, {
     onDelete: "SET NULL",
     onUpdate: "CASCADE",
   })
   @JoinColumn([{ name: "chat_id", referencedColumnName: "id" }])
-  chat: Grupos;
+  chat: Grupo;
 
-  @ManyToOne(() => Jogos, (jogos) => jogos.salas, {
+  @ManyToOne(() => Jogo, (jogo) => jogo.salas, {
     onDelete: "SET NULL",
     onUpdate: "CASCADE",
   })
   @JoinColumn([{ name: "jogo_id", referencedColumnName: "id" }])
-  jogo: Jogos;
+  jogo: Jogo;
 
   @OneToMany(() => SalasUsuarios, (salasUsuarios) => salasUsuarios.sala)
   salasUsuarios: SalasUsuarios[];

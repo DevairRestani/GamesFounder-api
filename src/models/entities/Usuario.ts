@@ -1,14 +1,12 @@
-import { Column, Entity, OneToMany } from "typeorm";
-import { Amigos } from "./Amigos";
-import { Conversas } from "./Conversas";
-import { Feeds } from "./Feeds";
-import { Grupos } from "./Grupos";
-import { JogosFavoritos } from "./JogosFavoritos";
+import { Column, Entity, JoinTable, ManyToMany, OneToMany } from "typeorm";
+import { Conversas } from "./Conversa";
+import { Feed } from "./Feed";
+import { Grupo } from "./Grupo";
+import { Jogo } from "./Jogo";
 import { SalasUsuarios } from "./SalasUsuarios";
-import { UsuariosContas } from "./UsuariosContas";
 
 @Entity("usuarios", { schema: "public" })
-export class Usuarios {
+export class Usuario {
   @Column("uuid", {
     primary: true,
     name: "id",
@@ -52,30 +50,24 @@ export class Usuarios {
   })
   atualizadoEm: Date;
 
-  @OneToMany(() => Amigos, (amigos) => amigos.amigos)
-  amigos: Amigos[];
+  @ManyToMany(() => Usuario)
+  @JoinTable()
+  amigos: Usuario[];
 
-  @OneToMany(() => Amigos, (amigos) => amigos.usuario)
-  amigos2: Amigos[];
-
-  @OneToMany(() => Conversas, (conversas) => conversas.usuarioIdDestinatario)
+  @ManyToMany(() => Conversas)
+  @JoinTable()
   conversas: Conversas[];
 
-  @OneToMany(() => Conversas, (conversas) => conversas.usuarioIdRemetente)
-  conversas2: Conversas[];
+  @OneToMany(() => Feed, (feed) => feed.usuario)
+  feeds: Feed[];
 
-  @OneToMany(() => Feeds, (feeds) => feeds.usuario)
-  feeds: Feeds[];
+  @ManyToMany(() => Grupo)
+  @JoinTable()
+  grupos: Grupo[];
 
-  @OneToMany(() => Grupos, (grupos) => grupos.usuario)
-  grupos: Grupos[];
-
-  @OneToMany(() => JogosFavoritos, (jogosFavoritos) => jogosFavoritos.usuario)
-  jogosFavoritos: JogosFavoritos[];
+  @OneToMany(() => Jogo, (jogo) => jogo.usuario)
+  jogosFavoritos: Jogo[];
 
   @OneToMany(() => SalasUsuarios, (salasUsuarios) => salasUsuarios.usuario)
   salasUsuarios: SalasUsuarios[];
-
-  @OneToMany(() => UsuariosContas, (usuariosContas) => usuariosContas.usuario)
-  usuariosContas: UsuariosContas[];
 }

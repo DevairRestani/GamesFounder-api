@@ -3,6 +3,7 @@ import loginRouter from "./login.routes";
 import usuariosRouter from "./Usuarios.routes";
 import recSenha from "./RecuperarSenha.routes";
 import jogosRouter from "./jogos.routes";
+import AmigoRuter from "./amigo.routes";
 
 const routes = Router();
 
@@ -12,6 +13,7 @@ routes.use("/login", loginRouter);
 routes.get("/", (req, res) => {
   res.send("success");
 });
-routes.use("/novo", jogosRouter);
+routes.use("/jogos", jogosRouter);
+routes.use("/amigo", AmigoRuter);
 
 export default routes;

@@ -1,8 +1,8 @@
 import { getRepository } from "typeorm";
 import { hash } from "bcryptjs";
 
-import { UsuariosContas } from "../models/entities/UsuariosContas";
-import { Usuarios } from "../models/entities/Usuarios";
+import { UsuarioConta } from "../models/entities/UsuarioConta";
+import { Usuario } from "../models/entities/Usuario";
 
 interface Request {
   email: string;
@@ -29,15 +29,15 @@ class CreateUsuariosServices {
     imagem,
     nome,
     nick,
-  }: Request): Promise<UsuariosContas> {
-    const UsuariosContasRepository = getRepository(UsuariosContas);
-    const UsuarioRepository = getRepository(Usuarios);
+  }: Request): Promise<UsuarioConta> {
+    const UsuarioContaRepository = getRepository(UsuarioConta);
+    const UsuariosRepository = getRepository(Usuario);
 
     if (!streamer && link) {
       throw new Error("Não foi possivel cadastrar o usuario");
     }
 
-    const UsuarioExiste = await UsuariosContasRepository.findOne({
+    const UsuarioExiste = await UsuarioContaRepository.findOne({
       where: { email },
     });
 
@@ -45,7 +45,7 @@ class CreateUsuariosServices {
       throw new Error("O usuário já existe");
     }
 
-    const Usuario = UsuarioRepository.create({
+    const Usuarios = UsuariosRepository.create({
       imagem,
       genero,
       dataNascimento,
@@ -56,21 +56,21 @@ class CreateUsuariosServices {
       nick,
     });
 
-    let usuarioSalvo = await UsuarioRepository.save(Usuario);
+    let Usuarioalvo = await UsuariosRepository.save(Usuarios);
 
-    if (!usuarioSalvo) {
+    if (!Usuarioalvo) {
       throw new Error("Não foi possivel salvar o usuario");
     }
 
     const hashedPassword = await hash(senha, 8);
 
-    const ContaUsuario = UsuariosContasRepository.create({
+    const ContaUsuario = UsuarioContaRepository.create({
       email,
       senha: hashedPassword,
-      usuario: usuarioSalvo,
+      usuario: Usuarioalvo,
     });
 
-    return await UsuariosContasRepository.save(ContaUsuario);
+    return await UsuarioContaRepository.save(ContaUsuario);
   }
 }
 

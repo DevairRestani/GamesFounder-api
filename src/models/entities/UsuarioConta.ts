@@ -1,8 +1,8 @@
-import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
-import { Usuarios } from "./Usuarios";
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from "typeorm";
+import { Usuario } from "./Usuario";
 
 @Entity("usuarios_contas", { schema: "public" })
-export class UsuariosContas {
+export class UsuarioConta {
   @Column("uuid", {
     primary: true,
     name: "id",
@@ -19,10 +19,10 @@ export class UsuariosContas {
   @Column("character varying", { name: "token", nullable: true })
   token: string | null;
 
-  @ManyToOne(() => Usuarios, (usuarios) => usuarios.usuariosContas, {
+  @OneToOne(() => Usuario, {
     onDelete: "SET NULL",
     onUpdate: "CASCADE",
   })
-  @JoinColumn([{ name: "usuario_id", referencedColumnName: "id" }])
-  usuario: Usuarios;
+  @JoinColumn()
+  usuario: Promise<Usuario>;
 }

@@ -1,10 +1,10 @@
-import { Column, Entity, OneToMany } from "typeorm";
-import { Grupos } from "./Grupos";
-import { JogosFavoritos } from "./JogosFavoritos";
-import { Salas } from "./Salas";
+import { Column, Entity, OneToMany, ManyToOne } from "typeorm";
+import { Grupo } from "./Grupo";
+import { Salas } from "./Sala";
+import { Usuario } from "./Usuario";
 
 @Entity("jogos", { schema: "public" })
-export class Jogos {
+export class Jogo {
   @Column("uuid", {
     primary: true,
     name: "id",
@@ -21,12 +21,12 @@ export class Jogos {
   @Column("date", { name: "ano", nullable: true })
   ano: string | null;
 
-  @OneToMany(() => Grupos, (grupos) => grupos.jogo)
-  grupos: Grupos[];
-
-  @OneToMany(() => JogosFavoritos, (jogosFavoritos) => jogosFavoritos.jogo)
-  jogosFavoritos: JogosFavoritos[];
+  @OneToMany(() => Grupo, (grupos) => grupos.jogo)
+  grupos: Grupo[];
 
   @OneToMany(() => Salas, (salas) => salas.jogo)
   salas: Salas[];
+
+  @ManyToOne(() => Usuario, (usuario) => usuario.jogosFavoritos)
+  usuario: Usuario;
 }
