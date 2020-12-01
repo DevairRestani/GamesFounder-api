@@ -1,8 +1,8 @@
-import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
-import { Usuarios } from "./Usuarios";
+import { Column, Entity, ManyToOne } from "typeorm";
+import { Usuario } from "./Usuario";
 
 @Entity("feeds", { schema: "public" })
-export class Feeds {
+export class Feed {
   @Column("uuid", {
     primary: true,
     name: "id",
@@ -19,10 +19,9 @@ export class Feeds {
   @Column("character varying", { name: "conteudo" })
   conteudo: string;
 
-  @ManyToOne(() => Usuarios, (usuarios) => usuarios.feeds, {
+  @ManyToOne(() => Usuario, (usuario) => usuario.feeds, {
     onDelete: "SET NULL",
     onUpdate: "CASCADE",
   })
-  @JoinColumn([{ name: "usuario_id", referencedColumnName: "id" }])
-  usuario: Usuarios;
+  usuario: Usuario;
 }

@@ -1,6 +1,6 @@
 import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
-import { Salas } from "./Salas";
-import { Usuarios } from "./Usuarios";
+import { Salas } from "./Sala";
+import { Usuario } from "./Usuario";
 
 @Entity("salas_usuarios", { schema: "public" })
 export class SalasUsuarios {
@@ -18,10 +18,10 @@ export class SalasUsuarios {
   @JoinColumn([{ name: "sala_id", referencedColumnName: "id" }])
   sala: Salas;
 
-  @ManyToOne(() => Usuarios, (usuarios) => usuarios.salasUsuarios, {
+  @ManyToOne(() => Usuario, (usuario) => usuario.salasUsuarios, {
     onDelete: "SET NULL",
     onUpdate: "CASCADE",
   })
   @JoinColumn([{ name: "usuario_id", referencedColumnName: "id" }])
-  usuario: Usuarios;
+  usuario: Usuario;
 }

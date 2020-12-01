@@ -5,35 +5,35 @@ import authConfig from "../config/auth";
 import { UsuariosContas } from "../models/entities/UsuariosContas";
 
 interface TokenPayload {
-    iat: number;
-    exp: number;
-    sub: string;
+  iat: number;
+  exp: number;
+  sub: string;
 }
 
 export default function verificarAutenticado(
-    req: Request,
-    res: Response,
-    next: NextFunction
+  req: Request,
+  res: Response,
+  next: NextFunction
 ): void {
-    const authHeader = request.headers.authorization;
+  const authHeader = req.headers.authorization;
 
-    if (!authHeader) {
-        throw new Error("O token não existe");
-    }
+  if (!authHeader) {
+    throw new Error("O token não existe");
+  }
 
-    const [, token] = authHeader.split(" ");
+  const [, token] = authHeader.split(" ");
 
-    try {
-        const decodedToken = verify(token, authConfig.jwt.secret);
+  try {
+    const decodedToken = verify(token, authConfig.jwt.secret);
 
-        const { sub } = decodedToken as TokenPayload;
+    const { sub } = decodedToken as TokenPayload;
 
-        request.usuario = {
-            id: sub,
-        };
+    request.usuario = {
+      id: sub,
+    };
 
-        return next();
-    } catch {
-        throw new Error("Token inválido");
-    }
+    return next();
+  } catch {
+    throw new Error("Token inválido");
+  }
 }

@@ -1,77 +1,77 @@
 import { getRepository } from "typeorm";
 import { hash } from "bcryptjs";
 
-import { UsuariosContas } from "../models/entities/UsuariosContas";
-import { Usuarios } from "../models/entities/Usuarios";
+import { UsuarioConta } from "../models/entities/UsuarioConta";
+import { Usuario } from "../models/entities/Usuario";
 
 interface Request {
-    email: string;
-    senha: string;
-    dataNascimento: string;
-    exibirDataNascimento: boolean;
-    genero: string | null;
-    streamer: boolean;
-    link: string | null;
-    imagem: object | null;
-    nome: string;
-    nick: string | null;
+  email: string;
+  senha: string;
+  dataNascimento: string;
+  exibirDataNascimento: boolean;
+  genero: string | null;
+  streamer: boolean;
+  link: string | null;
+  imagem: object | null;
+  nome: string;
+  nick: string | null;
 }
 
 class CreateUsuariosServices {
-    public async execute({
-        email,
-        senha,
-        dataNascimento,
-        exibirDataNascimento,
-        genero,
-        streamer,
-        link,
-        imagem,
-        nome,
-        nick,
-    }: Request): Promise<UsuariosContas> {
-        const UsuariosContasRepository = getRepository(UsuariosContas);
-        const UsuarioRepository = getRepository(Usuarios);
+  public async execute({
+    email,
+    senha,
+    dataNascimento,
+    exibirDataNascimento,
+    genero,
+    streamer,
+    link,
+    imagem,
+    nome,
+    nick,
+  }: Request): Promise<UsuarioConta> {
+    const UsuarioContaRepository = getRepository(UsuarioConta);
+    const UsuariosRepository = getRepository(Usuario);
 
-        if (!streamer && link) {
-            throw new Error("Não foi possivel cadastrar o usuario");
-        }
-
-        const UsuarioExiste = await UsuariosContasRepository.findOne({
-            where: { email },
-        });
-
-        if (UsuarioExiste) {
-            throw new Error("O usuário já existe");
-        }
-
-        const Usuario = UsuarioRepository.create({
-            imagem,
-            genero,
-            dataNascimento,
-            exibirDataNascimento,
-            streamer,
-            link,
-            nome,
-            nick,
-        });
-
-        let usuarioSalvo = await UsuarioRepository.save(Usuario);
-
-        if (!usuarioSalvo) {
-            throw new Error("Não foi possivel salvar o usuario");
-        }
-
-        const hashedPassword = await hash(senha, 8);
-
-        const ContaUsuario = UsuariosContasRepository.create({
-            email,
-            senha: hashedPassword,
-            usuario: usuarioSalvo,
-        });
-
-        return await UsuariosContasRepository.save(ContaUsuario);
+    if (!streamer && link) {
+      throw new Error("Não foi possivel cadastrar o usuario");
     }
+
+    const UsuarioExiste = await UsuarioContaRepository.findOne({
+      where: { email },
+    });
+
+    if (UsuarioExiste) {
+      throw new Error("O usuário já existe");
+    }
+
+    const Usuarios = UsuariosRepository.create({
+      imagem,
+      genero,
+      dataNascimento,
+      exibirDataNascimento,
+      streamer,
+      link,
+      nome,
+      nick,
+    });
+
+    let Usuarioalvo = await UsuariosRepository.save(Usuarios);
+
+    if (!Usuarioalvo) {
+      throw new Error("Não foi possivel salvar o usuario");
+    }
+
+    const hashedPassword = await hash(senha, 8);
+
+    const ContaUsuario = UsuarioContaRepository.create({
+      email,
+      senha: hashedPassword,
+      usuario: Usuarioalvo,
+    });
+
+    return await UsuarioContaRepository.save(ContaUsuario);
+  }
 }
 
 export default CreateUsuariosServices;
