@@ -7,13 +7,15 @@ class UsuarioRepository extends Repository<Usuarios> {
         return (await this.ListAll()) || null;
     }
 
-    public async ListAmigos(usuario_id: string): Promise<Usuarios[] | null> {
+    public async ListAmigos(usuario_id: string): Promise<Usuarios> {
         const usuario = await await this.findOne(usuario_id);
 
         if (!usuario) {
             throw new Error("Usuario não encontrado");
         }
 
-        return usuario.amigos || null;
+        return usuario || null;
     }
 }
+
+export default AmigosRepository;

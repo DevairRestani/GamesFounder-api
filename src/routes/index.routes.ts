@@ -9,6 +9,6 @@ const routes = Router();
 routes.use("/usuarios", usuariosRouter);
 routes.use("/recuperarSenha", recSenha);
 routes.use("/login", loginRouter);
-routes.use("/novo", jogosRouter);
+routes.use("/jogos", jogosRouter);
 
 export default routes;
