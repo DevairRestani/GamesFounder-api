@@ -2,17 +2,20 @@ import { getRepository } from "typeorm";
 
 import { Jogo } from "../models/entities/Jogo";
 
+import JogosRepository from "../repositories/JogosRepository";
+import jogosRouter from "../routes/jogos.routes";
+
 interface Request {
   nome: string;
   genero: string;
-  ano: string | null;
+  ano: Date | null;
 }
 
 class CreateJogosService {
   public async execute({ nome, genero, ano }: Request): Promise<Jogo> {
-    const JogosRepository = getRepository(Jogo);
+    const jogosRepository = getRepository(Jogo);
 
-    const JogoExiste = await JogosRepository.findOne({
+    const JogoExiste = await jogosRepository.findOne({
       where: { nome },
     });
 
@@ -20,19 +23,15 @@ class CreateJogosService {
       throw new Error("Jogo já cadastrado!");
     }
 
-    const Jogos = JogosRepository.create({
+    const jogo = jogosRepository.create({
       nome,
       genero,
       ano,
     });
 
-    let jogoSalvo = await JogosRepository.save(Jogos);
+    let jogoSalvo = await jogosRepository.save(jogo);
 
-    if (!jogoSalvo) {
-      throw new Error("Não foi possivel salvar o jogo!");
-    }
-
-    return await JogosRepository.save(Jogos);
+    return jogoSalvo;
   }
 }
 
