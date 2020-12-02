@@ -1,4 +1,11 @@
-import { Column, Entity, OneToMany, ManyToOne } from "typeorm";
+import {
+  Column,
+  Entity,
+  OneToMany,
+  ManyToOne,
+  ManyToMany,
+  JoinTable,
+} from "typeorm";
 import { Grupo } from "./Grupo";
 import { Salas } from "./Sala";
 import { Usuario } from "./Usuario";
@@ -18,7 +25,7 @@ export class Jogo {
   @Column("character varying", { name: "genero" })
   genero: string;
 
-  @Column("date", { name: "ano", nullable: true })
+  @Column("character varying", { name: "ano", nullable: true })
   ano: string | null;
 
   @OneToMany(() => Grupo, (grupos) => grupos.jogo)
@@ -27,6 +34,8 @@ export class Jogo {
   @OneToMany(() => Salas, (salas) => salas.jogo)
   salas: Salas[];
 
-  @ManyToOne(() => Usuario, (usuario) => usuario.jogosFavoritos)
-  usuario: Usuario;
+  @ManyToMany(() => Usuario, (usuario) => usuario.jogosFavoritos, {
+    nullable: true,
+  })
+  usuarios: Usuario[] | null;
 }

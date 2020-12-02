@@ -24,5 +24,5 @@ export class UsuarioConta {
     onUpdate: "CASCADE",
   })
   @JoinColumn()
-  usuario: Promise<Usuario>;
+  usuario: Usuario;
 }

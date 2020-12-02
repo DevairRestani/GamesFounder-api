@@ -2,13 +2,10 @@ import { getRepository } from "typeorm";
 
 import { Jogo } from "../models/entities/Jogo";
 
-import JogosRepository from "../repositories/JogosRepository";
-import jogosRouter from "../routes/jogos.routes";
-
 interface Request {
   nome: string;
   genero: string;
-  ano: Date | null;
+  ano: string | null;
 }
 
 class CreateJogosService {
@@ -16,11 +13,15 @@ class CreateJogosService {
     const jogosRepository = getRepository(Jogo);
 
     const JogoExiste = await jogosRepository.findOne({
-      where: { nome },
+      where: { nome, genero, ano },
     });
 
     if (JogoExiste) {
       throw new Error("Jogo já cadastrado!");
+    }
+
+    if (!ano) {
+      throw new Error("Insira um ano");
     }
 
     const jogo = jogosRepository.create({

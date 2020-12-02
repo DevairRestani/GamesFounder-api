@@ -61,13 +61,16 @@ export class Usuario {
   @OneToMany(() => Feed, (feed) => feed.usuario)
   feeds: Feed[];
 
-  @ManyToMany(() => Grupo)
+  @ManyToMany(() => Grupo, (grupo) => grupo.usuarios, { nullable: true })
   @JoinTable()
-  grupos: Grupo[];
+  grupos: Grupo[] | null;
 
-  @OneToMany(() => Jogo, (jogo) => jogo.usuario)
-  jogosFavoritos: Jogo[];
+  @ManyToMany(() => Jogo, (jogo) => jogo.usuarios, { nullable: true })
+  @JoinTable()
+  jogosFavoritos: Jogo[] | null;
 
-  @OneToMany(() => SalasUsuarios, (salasUsuarios) => salasUsuarios.usuario)
-  salasUsuarios: SalasUsuarios[];
+  @OneToMany(() => SalasUsuarios, (salasUsuarios) => salasUsuarios.usuario, {
+    nullable: true,
+  })
+  salasUsuarios: SalasUsuarios[] | null;
 }

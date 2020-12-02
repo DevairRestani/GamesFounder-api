@@ -1,8 +1,5 @@
 import { Response, Router } from "express";
-import { getCustomRepository } from "typeorm";
-import { Jogos } from "../models/entities/Jogo";
 
-import JogosRepository from "../repositories/JogosRepository";
 import CreateJogosService from "../services/createJogos.service";
 
 const jogosRouter = Router();
@@ -25,7 +22,7 @@ jogosRouter
       return Response.status(400).json({ message: err.message });
     }
   })
-  .get("/novo", (req, res) => {
+  .get("/listar", (req, res) => {
     return res.status(200).json({ message: "jogos" });
   });
 

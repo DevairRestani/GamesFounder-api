@@ -1,6 +1,14 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToMany,
+  ManyToOne,
+  OneToMany,
+} from "typeorm";
 import { Jogo } from "./Jogo";
 import { Salas } from "./Sala";
+import { Usuario } from "./Usuario";
 
 @Entity("grupos", { schema: "public" })
 export class Grupo {
@@ -20,13 +28,17 @@ export class Grupo {
   @Column("character varying", { name: "message" })
   message: string;
 
-  @ManyToOne(() => Jogo, (jogo) => jogo.grupos, {
+  @ManyToMany(() => Jogo, (jogo) => jogo.grupos, {
     onDelete: "SET NULL",
     onUpdate: "CASCADE",
+    nullable: true,
   })
   @JoinColumn([{ name: "jogo_id", referencedColumnName: "id" }])
-  jogo: Jogo;
+  jogo: Jogo | null;
 
   @OneToMany(() => Salas, (salas) => salas.chat)
   salas: Salas[];
+
+  @ManyToMany(() => Usuario, (usuario) => usuario.grupos, { nullable: true })
+  usuarios: Usuario | null;
 }

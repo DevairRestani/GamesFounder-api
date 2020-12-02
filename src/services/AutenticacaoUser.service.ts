@@ -20,6 +20,7 @@ class AutenticacaoUserService {
 
     const usuario = await UsuarioRepository.findOne({
       where: { email: email },
+      relations: ["usuario"],
     });
 
     if (!usuario) {
@@ -32,7 +33,7 @@ class AutenticacaoUserService {
     }
 
     const token = sign({}, authConfig.jwt.secret, {
-      subject: (await usuario.usuario).id,
+      subject: usuario.usuario.id,
       expiresIn: authConfig.jwt.expiresIn,
     });
 
